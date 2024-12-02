@@ -1,43 +1,62 @@
 <?php
+// Incluir el archivo de configuración
 include 'config.php';
 
+// Función para validar las entradas (solo letras, números y guiones bajos)
 function isValidInput($input) {
-    return preg_match('/^[a-zA-Z0-9]+$/', $input);
+    return preg_match('/^[a-zA-Z0-9_]+$/', $input);
 }
 
-$action = $_POST['action'];
-$user = $conn->real_escape_string($_POST['username']);
-$pass = $_POST['password'];
+// Verificar si el formulario ha sido enviado mediante POST
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Obtener la acción desde el formulario
+    $action = $_POST['action'];
+    $user = $conn->real_escape_string($_POST['username']);
+    $pass = $_POST['password'];
 
-if (!isValidInput($user) || !isValidInput($pass)) {
-    die("El nombre de usuario o la contraseña contienen caracteres no permitidos.");
-}
-
-if ($action == "register") {
-    $hashed_password = password_hash($pass, PASSWORD_DEFAULT);
-    $sql = "INSERT INTO usuarios (username, password) VALUES ('$user', '$hashed_password')";
-    if ($conn->query($sql) === TRUE) {
-        echo "Registro exitoso";
-    } else {
-        echo "Error: " . $sql . "<br>" . $conn->error;
+    // Validar los datos
+    if (!isValidInput($user) || !isValidInput($pass)) {
+        echo json_encode(["status" => "error", "message" => "El nombre de usuario o la contraseña contienen caracteres no permitidos."]);
+        exit;
     }
-} elseif ($action == "login") {
-    $sql = "SELECT password FROM usuarios WHERE username='$user'";
-    $result = $conn->query($sql);
-    if ($result->num_rows > 0) {
-        $row = $result->fetch_assoc();
-        if (password_verify($pass, $row['password'])) {
-            echo "Inicio de sesión exitoso";
+
+    // Registro de usuario
+    if ($action == "register") {
+        // Verificar si el nombre de usuario ya existe
+        $stmt = $conn->prepare("SELECT id FROM usuarios WHERE username = ?");
+        $stmt->bind_param("s", $user);
+        $stmt->execute();
+        $stmt->store_result();
+
+        if ($stmt->num_rows > 0) {
+            // Si el usuario ya existe, mostrar mensaje de error
+            echo json_encode(["status" => "error", "message" => "El nombre de usuario ya está registrado."]);
         } else {
-            echo "Contraseña incorrecta";
+            // Hashear la contraseña antes de guardarla
+            $hashed_password = password_hash($pass, PASSWORD_DEFAULT);
+
+            // Insertar el nuevo usuario en la base de datos
+            $stmt = $conn->prepare("INSERT INTO usuarios (username,password) VALUES (?, ?)");
+            $stmt->bind_param("ss",$user,$hashed_password);
+
+            if ($stmt->execute()) {
+                // Si el registro es exitoso, devolver mensaje de éxito
+                echo json_encode(["status" => "success", "message" => "Registro exitoso. Redirigiendo al login..."]);
+            } else {
+                // Si hay un error al insertar, devolver el mensaje de error
+                echo json_encode(["status" => "error", "message" => "Error al registrar el usuario: " . $stmt->error]);
+            }
         }
+        $stmt->close();
     } else {
-        echo "Usuario no encontrado";
+        echo json_encode(["status" => "error", "message" => "Acción no válida."]);
     }
+
+    // Cerrar la conexión
+    $conn->close();
+} else {
+    echo json_encode(["status" => "error", "message" => "Método de solicitud no permitido."]);
 }
-
-$conn->close();
 ?>
-
 
 

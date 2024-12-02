@@ -12,11 +12,18 @@
     <header> <h1>Inicio de Sesion</h1> </header>
      <main> 
         <form onsubmit="return validateForm(this)" action="userHandler.php" method="post">
-            <label for="username">Nombre de usuario:</label> 
-            <input type="text" id="username" name="username" required> 
-            <label for="password">Password:</label> 
-            <input type="password" id="password" name="password" required> 
-            <button type="submit" name="action" value="login">Iniciar Sesion</button>
-         </form> <p>No tienes una cuenta? <a href="register.html">Registrate </a></p> </main>
+            <label for="username">Nombre de usuario:</label>
+            <input type="text" id="username" name="username" required>
+        
+            <label for="password">Contraseña:</label>
+            <input type="password" id="password" name="password" required>
+        
+            <!-- Campo oculto para enviar la acción "login" -->
+            <input type="hidden" name="action" value="login">
+        
+            <button type="submit">Iniciar sesión</button>
+        </form>
+        
+     <p>No tienes una cuenta? <a href="register.html">Registrate </a></p> </main>
 </body>
 </html>
