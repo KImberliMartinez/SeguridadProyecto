@@ -1,23 +1,23 @@
 <?php
-$servername = "localhost"; // Asegúrate de que 'localhost' sea correcto para tu servidor MySQL
+$servername = "localhost"; // Asegï¿½rate de que 'localhost' sea correcto para tu servidor MySQL
 $username = "root";        // Nombre de usuario de MySQL
-$password = "";        // Contraseña de MySQL
-$dbname = "";      // Nombre de la base de datos
+$password = "itson";        // Contraseï¿½a de MySQL
+$dbname = "registro";      // Nombre de la base de datos
 
-// Habilitar la visualización de errores para depuración
+// Habilitar la visualizaciï¿½n de errores para depuraciï¿½n
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-// Crear conexión
+// Crear conexiï¿½n
 $conn = new mysqli($servername, $username, $password, $dbname);
 
-// Verificar conexión
+// Verificar conexiï¿½n
 if ($conn->connect_error) {
-    die("Conexión fallida: " . $conn->connect_error);
+    die("Conexiï¿½n fallida: " . $conn->connect_error);
 }
 
-// Verificar que las variables estén definidas y no estén vacías
+// Verificar que las variables estï¿½n definidas y no estï¿½n vacï¿½as
 if (!isset($_POST['action'], $_POST['username'], $_POST['password'])) {
     die("Datos incompletos proporcionados.");
 }
@@ -40,9 +40,9 @@ if ($action == "register") {
     if ($result->num_rows > 0) {
         $row = $result->fetch_assoc();
         if (password_verify($pass, $row['password'])) {
-            echo "Inicio de sesión exitoso";
+            echo "Inicio de sesiï¿½n exitoso";
         } else {
-            echo "Contraseña incorrecta";
+            echo "Contraseï¿½a incorrecta";
         }
     } else {
         echo "Usuario no encontrado";
