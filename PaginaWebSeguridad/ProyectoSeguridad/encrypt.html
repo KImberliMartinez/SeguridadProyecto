@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Encriptar Texto</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.0.0/crypto-js.min.js"></script>
+</head>
+<body>
+    <header>
+        <h1>Encriptar Texto</h1>
+    </header>
+    <main>
+
+        <form onsubmit="return encryptText()">
+            <label for="plaintext">Texto en Claro:</label>
+            <input type="text" id="plaintext" name="plaintext" required>
+            <button type="submit">Encriptar</button>
+        </form>
+        <label id="encryptedLabel" for="plaintext"></label>
+        <br><br>
+        <button onclick="window.location.href='decrypt.html'">Ir a Desencriptar</button>
+    </main>
+    <script src="encryptDecrypt.js"></script>
+</body>
+</html>
