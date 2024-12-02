@@ -9,6 +9,14 @@
 
 </head>
 <body>
-    <header> <h1>Inicio de Sesion</h1> </header> <main> <form action="userHandler.php" method="post"> <label for="username">Nombre de usuario:</label> <input type="text" id="username" name="username" required> <label for="password">Password:</label> <input type="password" id="password" name="password" required> <button type="submit" name="action" value="login">Iniciar Sesion</button> </form> <p>¿No tienes una cuenta? <a href="register.html">Registrate </a></p> </main>
+    <header> <h1>Inicio de Sesion</h1> </header>
+     <main> 
+        <form onsubmit="return validateForm(this)" action="userHandler.php" method="post">
+            <label for="username">Nombre de usuario:</label> 
+            <input type="text" id="username" name="username" required> 
+            <label for="password">Password:</label> 
+            <input type="password" id="password" name="password" required> 
+            <button type="submit" name="action" value="login">Iniciar Sesion</button>
+         </form> <p>No tienes una cuenta? <a href="register.html">Registrate </a></p> </main>
 </body>
 </html>

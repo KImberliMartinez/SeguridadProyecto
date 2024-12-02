@@ -1,30 +1,17 @@
 <?php
-$servername = "localhost"; // Asegúrate de que 'localhost' sea correcto para tu servidor MySQL
-$username = "root";        // Nombre de usuario de MySQL
-$password = "";        // Contraseña de MySQL
-$dbname = "";      // Nombre de la base de datos
+include 'config.php';
 
-// Habilitar la visualización de errores para depuración
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-
-// Crear conexión
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-// Verificar conexión
-if ($conn->connect_error) {
-    die("Conexión fallida: " . $conn->connect_error);
-}
-
-// Verificar que las variables estén definidas y no estén vacías
-if (!isset($_POST['action'], $_POST['username'], $_POST['password'])) {
-    die("Datos incompletos proporcionados.");
+function isValidInput($input) {
+    return preg_match('/^[a-zA-Z0-9]+$/', $input);
 }
 
 $action = $_POST['action'];
-$user = $conn->real_escape_string($_POST['username']); // Escapar caracteres especiales
+$user = $conn->real_escape_string($_POST['username']);
 $pass = $_POST['password'];
+
+if (!isValidInput($user) || !isValidInput($pass)) {
+    die("El nombre de usuario o la contraseÃ±a contienen caracteres no permitidos.");
+}
 
 if ($action == "register") {
     $hashed_password = password_hash($pass, PASSWORD_DEFAULT);
@@ -40,9 +27,9 @@ if ($action == "register") {
     if ($result->num_rows > 0) {
         $row = $result->fetch_assoc();
         if (password_verify($pass, $row['password'])) {
-            echo "Inicio de sesión exitoso";
+            echo "Inicio de sesiÃ³n exitoso";
         } else {
-            echo "Contraseña incorrecta";
+            echo "ContraseÃ±a incorrecta";
         }
     } else {
         echo "Usuario no encontrado";
@@ -51,4 +38,6 @@ if ($action == "register") {
 
 $conn->close();
 ?>
+
+
 

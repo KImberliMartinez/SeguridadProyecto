@@ -1,18 +1,33 @@
+function isValidInput(input) {
+     const regex = /^[a-zA-Z0-9]+$/; // Solo permite letras y nÃºmeros return regex.test(input);
+     return regex.test(input); 
+    }
+
 function encryptText() {
     const plaintext = document.getElementById('plaintext').value;
-    const key = 'mysecretkey12345'; // Clave de encriptación (debe tener 16 caracteres para AES-128)
+    const key = 'mysecretkey12345'; // Clave de encriptaciï¿½n (debe tener 16 caracteres para AES-128)
     const encrypted = CryptoJS.AES.encrypt(plaintext, key).toString();
     const encryptedLabel = document.getElementById('encryptedLabel');
     encryptedLabel.innerText = `Texto Encriptado: ${encrypted}`;
-    return false; // Evita el envío del formulario
+    return false; // Evita el envï¿½o del formulario
 }
 
 
 function decryptText() {
     const ciphertext = document.getElementById('ciphertext').value;
-    const key = 'mysecretkey12345'; // Clave de desencriptación
+    const key = 'mysecretkey12345'; // Clave de desencriptaciï¿½n
     const decrypted = CryptoJS.AES.decrypt(ciphertext, key).toString(CryptoJS.enc.Utf8);
     const decryptedLabel = document.getElementById('decryptedLabel');
     decryptedLabel.innerText = `Texto Desencriptado: ${decrypted}`;
-    return false; // Evita el envío del formulario
+    return false; // Evita el envï¿½o del formulario
 }
+
+function validateForm(form) {
+     const username = form.username.value; 
+     const password = form.password.value; 
+     if (!isValidInput(username) || !isValidInput(password)) { 
+        alert('El nombre de usuario o la contraseÃ±a contienen caracteres no permitidos.'); 
+        return false; 
+    } 
+    return true;
+ }

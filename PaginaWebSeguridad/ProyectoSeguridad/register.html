@@ -12,7 +12,7 @@
         <h1>Registro de Usuarios</h1>
     </header>
     <main>
-        <form action="userHandler.php" method="post">
+        <form onsubmit="return validateForm(this)" action="userHandler.php" method="post">
             <label for="username">Nombre de usuario:</label>
             <input type="text" id="username" name="username" required>
             <label for="password">Password:</label>
